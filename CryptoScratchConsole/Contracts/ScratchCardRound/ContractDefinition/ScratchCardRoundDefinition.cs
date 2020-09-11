@@ -1,0 +1,114 @@
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Numerics;
+using Nethereum.Hex.HexTypes;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Web3;
+using Nethereum.RPC.Eth.DTOs;
+using Nethereum.Contracts.CQS;
+using Nethereum.Contracts;
+using System.Threading;
+
+namespace Contracts.Contracts.ScratchCardRound.ContractDefinition
+{
+
+
+    public partial class ScratchCardRoundDeployment : ScratchCardRoundDeploymentBase
+    {
+        public ScratchCardRoundDeployment() : base(BYTECODE) { }
+        public ScratchCardRoundDeployment(string byteCode) : base(byteCode) { }
+    }
+
+    public class ScratchCardRoundDeploymentBase : ContractDeploymentMessage
+    {
+        public static string BYTECODE = "6101806040526203030c608090815262038b9260a0526203baa460c0526203ca1260e0526203d002610100526203d066610120526203d08e610140526203d090610160526100519060049060086101cb565b5034801561005e57600080fd5b506040516107073803806107078339818101604052602081101561008157600080fd5b5051600080546001600160a01b031916331781554360019081018155600280548083018255619ab07f405787fa12a823e0f2b7631cc41b3ba8828b3321ca811111fa75cd3aa3bb5ace9182015581548084018355612ee09082015581548084018355610fa090820155815480840183556105dc908201558154808401835560789082015581548084018355602890820155815480840183550181905562011ad0909304600581815560038054808501825594819052918590047fc2575a0e9e593c00f959f8c92f12db2869c3395a3b0502d05e2516446f71f85b94850155805482548085018455850181905582548085018455950294840194909455835481548084018355600a90910290840155835481548084018355601e909102908401558354815480840183556064909102908401559254835491820190935561138890920291015561023a565b82805482825590600052602060002090810192821561020d579160200282015b8281111561020d578251829062ffffff169055916020019190600101906101eb565b5061021992915061021d565b5090565b61023791905b808211156102195760008155600101610223565b90565b6104be806102496000396000f3fe608060405234801561001057600080fd5b506004361061004c5760003560e01c80632de1da6b1461005157806394ffd9211461006d578063d79d63be146100b1578063ff8de5ec146100b9575b600080fd5b61005961015a565b604080519115158252519081900360200190f35b61009f6004803603606081101561008357600080fd5b506001600160a01b0381351690602081013590604001356101b5565b60408051918252519081900360200190f35b61009f6103a4565b6100c16103aa565b604051808060200180602001838103835285818151815260200191508051906020019060200280838360005b838110156101055781810151838201526020016100ed565b50505050905001838103825284818151815260200191508051906020019060200280838360005b8381101561014457818101518382015260200161012c565b5050505090500194505050505060405180910390f35b6000600154431061016d575060016101b2565b60065b60018111156101ac5760006002828154811061018857fe5b906000526020600020015411156101a35760009150506101b2565b60001901610170565b50600190505b90565b600080546001600160a01b031633146101ff5760405162461bcd60e51b815260040180806020018281038252602b81526020018061045e602b913960400191505060405180910390fd5b60006203d09083069050600460008154811061021757fe5b906000526020600020015481101561028357604080516001600160a01b0387168152602081018690528082018390526000606082015290517f3b64e7cdd96af1b4f9b5116f9d8b5c6690a3c08ff821b7922d77da158e53ed2a9181900360800190a1600091505061039d565b60005b6007811015610396576004818154811061029c57fe5b906000526020600020015482101580156102cf5750600481600101815481106102c157fe5b906000526020600020015482105b1561038e577f3b64e7cdd96af1b4f9b5116f9d8b5c6690a3c08ff821b7922d77da158e53ed2a8686846003858154811061030557fe5b906000526020600020015460405180856001600160a01b03166001600160a01b0316815260200184815260200183815260200182815260200194505050505060405180910390a16002818154811061035957fe5b60009182526020909120018054600019019055600380548290811061037a57fe5b90600052602060002001549250505061039d565b600101610286565b5060009150505b9392505050565b60055490565b60608060026003818054806020026020016040519081016040528092919081815260200182805480156103fc57602002820191906000526020600020905b8154815260200190600101908083116103e8575b505050505091508080548060200260200160405190810160405280929190818152602001828054801561044e57602002820191906000526020600020905b81548152602001906001019080831161043a575b5050505050905091509150909156fe4f6e6c79205363726174636820636f6e74726163742063616e2063616c6c2074686973206d6574686f642ea2646970667358221220ea78c3d056dcadc4f2655a3ae2498e6e3fbbd698b26d3b67611a709e6c2ab7ae64736f6c63430006070033";
+        public ScratchCardRoundDeploymentBase() : base(BYTECODE) { }
+        public ScratchCardRoundDeploymentBase(string byteCode) : base(byteCode) { }
+        [Parameter("uint256", "total", 1)]
+        public virtual BigInteger Total { get; set; }
+    }
+
+    public partial class RoundOverThresholdFunction : RoundOverThresholdFunctionBase { }
+
+    [Function("RoundOverThreshold", "bool")]
+    public class RoundOverThresholdFunctionBase : FunctionMessage
+    {
+
+    }
+
+    public partial class ClaimPrizeFunction : ClaimPrizeFunctionBase { }
+
+    [Function("claimPrize", "uint256")]
+    public class ClaimPrizeFunctionBase : FunctionMessage
+    {
+        [Parameter("address", "player", 1)]
+        public virtual string Player { get; set; }
+        [Parameter("bytes32", "requestId", 2)]
+        public virtual byte[] RequestId { get; set; }
+        [Parameter("uint256", "randomNumber", 3)]
+        public virtual BigInteger RandomNumber { get; set; }
+    }
+
+    public partial class GetCardPriceFunction : GetCardPriceFunctionBase { }
+
+    [Function("getCardPrice", "uint256")]
+    public class GetCardPriceFunctionBase : FunctionMessage
+    {
+
+    }
+
+    public partial class UnclaimedPrizesFunction : UnclaimedPrizesFunctionBase { }
+
+    [Function("unclaimedPrizes", typeof(UnclaimedPrizesOutputDTO))]
+    public class UnclaimedPrizesFunctionBase : FunctionMessage
+    {
+
+    }
+
+    public partial class PrizeClaimEventDTO : PrizeClaimEventDTOBase { }
+
+    [Event("PrizeClaim")]
+    public class PrizeClaimEventDTOBase : IEventDTO
+    {
+        [Parameter("address", "player", 1, false )]
+        public virtual string Player { get; set; }
+        [Parameter("bytes32", "requestId", 2, false )]
+        public virtual byte[] RequestId { get; set; }
+        [Parameter("uint256", "number", 3, false )]
+        public virtual BigInteger Number { get; set; }
+        [Parameter("uint256", "prize", 4, false )]
+        public virtual BigInteger Prize { get; set; }
+    }
+
+    public partial class RoundOverThresholdOutputDTO : RoundOverThresholdOutputDTOBase { }
+
+    [FunctionOutput]
+    public class RoundOverThresholdOutputDTOBase : IFunctionOutputDTO 
+    {
+        [Parameter("bool", "success", 1)]
+        public virtual bool Success { get; set; }
+    }
+
+
+
+    public partial class GetCardPriceOutputDTO : GetCardPriceOutputDTOBase { }
+
+    [FunctionOutput]
+    public class GetCardPriceOutputDTOBase : IFunctionOutputDTO 
+    {
+        [Parameter("uint256", "price", 1)]
+        public virtual BigInteger Price { get; set; }
+    }
+
+    public partial class UnclaimedPrizesOutputDTO : UnclaimedPrizesOutputDTOBase { }
+
+    [FunctionOutput]
+    public class UnclaimedPrizesOutputDTOBase : IFunctionOutputDTO 
+    {
+        [Parameter("uint256[]", "num", 1)]
+        public virtual List<BigInteger> Num { get; set; }
+        [Parameter("uint256[]", "pays", 2)]
+        public virtual List<BigInteger> Pays { get; set; }
+    }
+}
