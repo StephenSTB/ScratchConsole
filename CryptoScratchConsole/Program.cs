@@ -226,6 +226,7 @@ namespace ScratchConsole
                 var round = await CsService.RoundNumberQueryAsync();
 
                 var mint = await CsService.MintAmountQueryAsync();
+                mint = await CsService.MintAmountQueryAsync();
 
                 Console.WriteLine($"Mint amount: {mint}, Round: {round}");
 
